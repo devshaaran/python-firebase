@@ -5,6 +5,7 @@ except ImportError:
     from urllib import parse as urlparse
 
 import json
+from time import sleep
 
 from .firebase_token_generator import FirebaseTokenGenerator
 from .decorators import http_connection
@@ -262,7 +263,7 @@ class FirebaseApplication(object):
             headers.update(self.authentication.authenticator.HEADERS)
 
     @http_connection(60)
-    def get(self, url, name, params=None, headers=None, connection=None):
+    def get(self, url, name, params=None, headers=None, connection=None , Delay_interval = 0):
         """
         Synchronous GET request.
         """
@@ -272,8 +273,9 @@ class FirebaseApplication(object):
         endpoint = self._build_endpoint_url(url, name)
         self._authenticate(params, headers)
         return make_get_request(endpoint, params, headers, connection=connection)
+        sleep(Delay_interval)
 
-    def get_async(self, url, name, callback=None, params=None, headers=None):
+    def get_async(self, url, name, callback=None, params=None, headers=None , Delay_interval = 0):
         """
         Asynchronous GET request with the process pool.
         """
@@ -284,9 +286,11 @@ class FirebaseApplication(object):
         self._authenticate(params, headers)
         process_pool.apply_async(make_get_request,
             args=(endpoint, params, headers), callback=callback)
-
+        
+        sleep(Delay_interval)
+        
     @http_connection(60)
-    def put(self, url, name, data, params=None, headers=None, connection=None):
+    def put(self, url, name, data, params=None, headers=None, connection=None ,  Delay_interval = 0):
         """
         Synchronous PUT request. There will be no returning output from
         the server, because the request will be made with ``silent``
@@ -300,8 +304,9 @@ class FirebaseApplication(object):
         data = json.dumps(data, cls=JSONEncoder)
         return make_put_request(endpoint, data, params, headers,
                                 connection=connection)
-
-    def put_async(self, url, name, data, callback=None, params=None, headers=None):
+        sleep(Delay_interval)
+        
+    def put_async(self, url, name, data, callback=None, params=None, headers=None , Delay_interval = 0):
         """
         Asynchronous PUT request with the process pool.
         """
@@ -314,9 +319,10 @@ class FirebaseApplication(object):
         process_pool.apply_async(make_put_request,
                                  args=(endpoint, data, params, headers),
                                  callback=callback)
-
+        sleep(Delay_interval)
+        
     @http_connection(60)
-    def post(self, url, data, params=None, headers=None, connection=None):
+    def post(self, url, data, params=None, headers=None, connection=None ,  Delay_interval = 0):
         """
         Synchronous POST request. ``data`` must be a JSONable value.
         """
@@ -327,8 +333,9 @@ class FirebaseApplication(object):
         data = json.dumps(data, cls=JSONEncoder)
         return make_post_request(endpoint, data, params, headers,
                                  connection=connection)
+        sleep(Delay_interval)
 
-    def post_async(self, url, data, callback=None, params=None, headers=None):
+    def post_async(self, url, data, callback=None, params=None, headers=None , Delay_interval = 0):
         """
         Asynchronous POST request with the process pool.
         """
@@ -340,9 +347,10 @@ class FirebaseApplication(object):
         process_pool.apply_async(make_post_request,
                                  args=(endpoint, data, params, headers),
                                  callback=callback)
+        sleep(Delay_interval)
 
     @http_connection(60)
-    def patch(self, url, data, params=None, headers=None, connection=None):
+    def patch(self, url, data, params=None, headers=None, connection=None , Delay_interval = 0):
         """
         Synchronous POST request. ``data`` must be a JSONable value.
         """
@@ -353,8 +361,9 @@ class FirebaseApplication(object):
         data = json.dumps(data, cls=JSONEncoder)
         return make_patch_request(endpoint, data, params, headers,
                                   connection=connection)
+        sleep(Delay_interval)
 
-    def patch_async(self, url, data, callback=None, params=None, headers=None):
+    def patch_async(self, url, data, callback=None, params=None, headers=None , Delay_interval = 0):
         """
         Asynchronous PATCH request with the process pool.
         """
@@ -366,9 +375,10 @@ class FirebaseApplication(object):
         process_pool.apply_async(make_patch_request,
                                  args=(endpoint, data, params, headers),
                                  callback=callback)
-
+        sleep(Delay_interval)
+        
     @http_connection(60)
-    def delete(self, url, name, params=None, headers=None, connection=None):
+    def delete(self, url, name, params=None, headers=None, connection=None, Delay_interval = 0):
         """
         Synchronous DELETE request. ``data`` must be a JSONable value.
         """
@@ -378,8 +388,9 @@ class FirebaseApplication(object):
         endpoint = self._build_endpoint_url(url, name)
         self._authenticate(params, headers)
         return make_delete_request(endpoint, params, headers, connection=connection)
+        sleep(Delay_interval)
 
-    def delete_async(self, url, name, callback=None, params=None, headers=None):
+    def delete_async(self, url, name, callback=None, params=None, headers=None, Delay_interval = 0):
         """
         Asynchronous DELETE request with the process pool.
         """
@@ -390,3 +401,4 @@ class FirebaseApplication(object):
         self._authenticate(params, headers)
         process_pool.apply_async(make_delete_request,
                     args=(endpoint, params, headers), callback=callback)
+        sleep(Delay_interval)
